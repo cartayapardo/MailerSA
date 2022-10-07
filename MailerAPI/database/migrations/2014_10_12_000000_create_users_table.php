@@ -20,6 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('cedula');
             $table->string('fechaNacimiento');
             $table->integer('codigoCiudad');
+            $table->integer('rol_id');
             $table->rememberToken();
             $table->timestamps();
         });
