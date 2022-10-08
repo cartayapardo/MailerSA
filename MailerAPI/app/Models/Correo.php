@@ -8,7 +8,7 @@ class Correo extends Model
 {
     protected $fillable = [
         'asunto',
-        'destinatrio',
+        'destinatario',
         'cuerpo',
         'estado',
         'user_id'
@@ -16,7 +16,7 @@ class Correo extends Model
 
     protected $casts = [
         'asunto' => 'string',
-        'destinatrio' => 'string',
+        'destinatario' => 'string',
         'cuerpo' => 'string',
         'estado' => 'string',
         'user_id' => 'integer'
@@ -24,7 +24,7 @@ class Correo extends Model
 
     public static $rules = [
         'asunto' => 'required',
-        'destinatrio' => 'required',
+        'destinatario' => 'required',
         'cuerpo' => 'required',
         'estado' => 'required',
         'user_id' => 'required'

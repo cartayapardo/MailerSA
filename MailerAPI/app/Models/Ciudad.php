@@ -21,6 +21,8 @@ class Ciudad extends Model
         'estado_id' => 'required'
     ];
 
+    protected $with = ['estado'];
+
     public function estado()
     {
         return $this->belongsTo(Estado::class, 'estado_id');

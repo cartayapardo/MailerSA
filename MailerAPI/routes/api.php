@@ -1,5 +1,13 @@
 <?php
 
+use App\Http\Controllers\CiudadController;
+use App\Http\Controllers\EstadoController;
+use App\Http\Controllers\PaisController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CorreoController;
+use App\Http\Controllers\RolController;
+use App\Http\Controllers\TrazaController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,28 +31,30 @@ Route::post('/autenticacion', [UserController::class, 'autenticacion']);
 Route::group(['middleware'=>['auth:sanctum']], function () {
 
     //Ruta del Controlador Ciudad
-    Route::get('/ciudad', [CiudadController::class, 'index']);
+    Route::post('/ciudad', [CiudadController::class, 'getBy']);
+
+    //Ruta del Controlador Ciudad
+    Route::get('/roles', [RolController::class, 'index']);
+
+    //Rutas del Controlador Estado
+    Route::post('/estado', [EstadoController::class, 'getBy']);
+
+    //Ruta del Controlador País
+    Route::get('/pais', [PaisController::class, 'index']);
+
+    //Ruta del Controlador User
+    Route::post('/paginado', [UserController::class, 'paginado']);
+    Route::post('/user', [UserController::class, 'getBy']);
+    Route::post('/userGuardar', [UserController::class, 'guardar']);
+    Route::post('/userActualizar', [UserController::class, 'update']);
+    Route::post('/userEliminar', [UserController::class, 'delete']);
+    Route::post('/cerrar', [UserController::class, 'cerrar']);
 
     //Rutas del Controlador Correo
     Route::get('/correo', [CorreoController::class, 'index']);
     Route::post('/correo', [CorreoController::class, 'getBy']);
-    Route::post('/enviar', [CorreoController::class, 'enviar']);
-
-    //Rutas del Controlador Estado
-    Route::post('/correo', [CorreoController::class, 'getBy']);
-
-    //Ruta del Controlador País
-    Route::post('/pais', [PaisController::class, 'index']);
+    Route::post('/enviar', [CorreoController::class, 'store']);
 
     //Ruta del Controlador Traza
     Route::get('/traza', [TrazaController::class, 'index']);
-
-    //Ruta del Controlador User
-    Route::get('/user', [UserController::class, 'index']);
-    Route::post('/user', [UserController::class, 'store']);
-    Route::put('/user', [UserController::class, 'update']);
-    Route::delete('/user', [UserController::class, 'destroy']);
-
-    //Ruta de cerrar sesion
-    Route::post('/cerrar', [UserController::class, 'cerrar']);
 });

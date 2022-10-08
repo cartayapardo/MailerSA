@@ -20,7 +20,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'cedula',
         'fechaNacimiento',
         'codigoCiudad',
-        'rol_id'
+        'rol_id',
+        'ciudad_id'
     ];
 
     protected $hidden = [
@@ -37,7 +38,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'cedula' => 'string',
         'fechaNacimiento' => 'string',
         'codigoCiudad' => 'integer',
-        'rol_id' => 'integer'
+        'rol_id' => 'integer',
+        'ciudad_id' => 'integer'
     ];
 
     public static $rules = [
@@ -51,6 +53,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'rol_id' => 'required',
         'ciudad_id' => 'required'
     ];
+
+    protected $with = ['rol', 'ciudad'];
 
     public function rol()
     {

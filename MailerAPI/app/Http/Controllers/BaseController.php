@@ -16,20 +16,20 @@ class BaseController extends Controller
 
     public function index()
     {
-        $respuesta['data'] = $this->modelo->get();
-        return ['logrado' => true, 'datos' => $respuesta['data'], 'sms' => 'Datos cargados correctamente'];
+        $respuesta = $this->modelo->get();
+        return ['logrado' => true, 'datos' => $respuesta, 'sms' => 'Datos cargados correctamente'];
     }
 
     public function paginado(request $parametros)
     {
-        $payload = $parametros->all();
-        $respuesta = $this->model->get();
-        return  $respuesta->paginate($payload['perPage'], ['*'], 'page', $payload['page']);
+        $respuesta = $this->modelo->paginate($parametros->rowsPerPage, ['*'], 'page', $parametros->page);
+        return ['logrado' => true, 'datos' => $respuesta, 'sms' => 'Datos cargados correctamente'];
     }
 
     public function getBy(Request $parametros)
     {
-        return $this->model->where($parametros['field'], $parametros['value'])->get();
+        $respuesta = $this->modelo->where($parametros['campo'], $parametros['valor'])->get();
+        return ['logrado' => true, 'datos' => $respuesta, 'sms' => 'Datos cargados correctamente'];
     }
 
     public function store(Request $parametros)
@@ -43,9 +43,9 @@ class BaseController extends Controller
         return ['logrado' => true, 'datos' => $nuevo, 'sms' => 'Creación del elemento con éxito'];
     }
 
-    public function update(Request $parametros, int $id)
+    public function update(Request $parametros)
     {
-        $anterior = $this->find($id);
+        $anterior = $this->find($parametros->id);
         if (!$anterior){
             return ['logrado' => false, 'datos' => null, 'sms' => 'No existe el elemento'];
         }
@@ -58,9 +58,10 @@ class BaseController extends Controller
         return ['logrado' => true, 'datos' => $anterior, 'sms' => 'Actualización de los datos con éxito'];
     }
 
-    public function delete(int $id)
+    public function delete(Request $parametros)
     {
-        $anterior = $this->modelo->destroy($id);
+        $anterior = $this->find($parametros->id);
+        $this->modelo->destroy($parametros->id);
         if(!$anterior){
             return ['logrado' => false, 'datos' => null, 'sms' => 'Ocurrió un error eliminando el elemento'];
         }
@@ -76,7 +77,7 @@ class BaseController extends Controller
         $traza['user_id'] = $usuario->id;
         $traza['anterior'] = $anterior;
         $traza['nuevo'] = $nuevo;
-        $traza['modelo'] = class_basename(get_class($this->model));
+        $traza['modelo'] = class_basename(get_class($this->modelo));
         Traza::create($traza);
     }
 

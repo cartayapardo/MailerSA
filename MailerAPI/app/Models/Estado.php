@@ -21,6 +21,8 @@ class Estado extends Model
         'pais_id' => 'required'
     ];
 
+    protected $with = ['pais'];
+
     public function ciudades()
     {
         return $this->hasMany(Ciudad::class, 'estado_id');

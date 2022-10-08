@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('fechaNacimiento');
             $table->integer('codigoCiudad');
             $table->integer('rol_id');
+            $table->integer('ciudad_id');
             $table->rememberToken();
             $table->timestamps();
         });

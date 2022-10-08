@@ -17,12 +17,12 @@ class UserController extends BaseController
     {
         $fields = $request->validate(
             [
-                'credential' => 'required|string',
-                'password' => 'required|string'
+                'credencial' => 'required|string',
+                'contraseña' => 'required|string'
             ]
         );
-        $usuario = User::where('email', $fields['credential'])->first();
-        if (!$usuario || !Hash::check($fields['password'], $usuario->password)){
+        $usuario = User::where('email', $fields['credencial'])->first();
+        if (!$usuario || !Hash::check($fields['contraseña'], $usuario->contraseña)){
             return ['logrado' => false, 'datos' => null, 'sms' => 'Sus credenciales no son correctas'];
         }
         $token = $usuario->createToken('mytoken')->plainTextToken;
@@ -38,4 +38,16 @@ class UserController extends BaseController
             $user->tokens()->where('id', explode('|', $request->bearerToken())[0])->delete();
             return ['logrado' => true, 'datos' => null, 'sms' => 'Salida de la aplicación con exito'];
     }
+
+    public function guardar(Request $request){
+        $parametros = $request->all();
+        $parametros['contraseña'] = Hash::make($parametros['contraseña']);
+        $nuevo = User::create($parametros);
+        if(!$nuevo){
+            return ['logrado' => false, 'datos' => null, 'sms' => 'Existe un error en la creación del elemento'];
+        }
+        $usuario = request()->user();
+        $this->crearTraza('Crear', $usuario, null, $nuevo);
+        return ['logrado' => true, 'datos' => $nuevo, 'sms' => 'Creación del elemento con éxito'];
+}
 }
